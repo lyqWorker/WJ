@@ -83,6 +83,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="login.html" />
+    <Content Include="Resources\custom\css\login.css" />
     <Content Include="Resources\image\logo.png" />
     <Content Include="Resources\plugins\css\bootstrap.min.css" />
     <Content Include="Resources\plugins\js\bootstrap.min.js" />
@@ -109,7 +110,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
-    <Folder Include="Resources\custom\css\" />
     <Folder Include="Resources\custom\js\" />
     <Folder Include="Views\" />
   </ItemGroup>
