@@ -1,5 +1,5 @@
-﻿body {
-    background: #eeeeee;
+﻿
+.login_box {
 }
 .header {
     height: 70px;
@@ -25,10 +25,17 @@
     height: 50px;
     margin-top: 8px;
 }
-
-    .header-info ul li h4 {
-        font-size: 23px;
-        font-weight: bold;
-        padding: 5px;
-        color: #0266d5;
-    }
+.header-info ul li h4 {
+    font-size: 23px;
+    font-weight: bold;
+    padding: 5px;
+    color: #0266d5;
+}
+.login-body {
+    width: 700px;
+    height: 400px;
+    background:#fff;
+    border-radius:8px;
+    border-top: 1px solid #e1e1e1;
+    margin:120px auto
+}
