@@ -1,41 +1,27 @@
-﻿
+﻿body {
+    background: #f5f5f5;
+}
 .login_box {
-}
-.header {
-    height: 70px;
-    background: #fff;
-    box-shadow: 0 0px 6px rgba(0,0,0,.4);
-    border-top: 1px solid #e1e1e1;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-.header-info ul {
-    margin: 0px;
-    height: 70px;
-    width: 80%;
-    margin: auto;
-}
-
-.header-info ul li {
-    list-style: none;
-    display: inline-block;
-    float: left;
-    height: 50px;
-    margin-top: 8px;
-}
-.header-info ul li h4 {
-    font-size: 23px;
-    font-weight: bold;
-    padding: 5px;
-    color: #0266d5;
-}
-.login-body {
-    width: 700px;
-    height: 400px;
+    width: 580px;
+    max-width: 580px;
+    min-width: 480px;
+    margin-top: 10%;
+    padding:0;
     background:#fff;
     border-radius:8px;
-    border-top: 1px solid #e1e1e1;
-    margin:120px auto
 }
+.login_head {
+    width: 100%;
+    background: #00acec;
+    margin: 0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.login_head h3 {
+    text-align: center;
+    color: #fff;
+    font-weight: 400;
+    margin: 0;
+    padding:40px 0;
+}
+

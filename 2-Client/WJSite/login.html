@@ -9,24 +9,32 @@
     <link href="Resources/custom/css/login.css" rel="stylesheet" />
 </head>
 <body>
-
-    <div class="login_box">
-        <dl>
-            <dt>
-                <img src="Resources/image/logo.png" style="width:80px;height:80px;" />
-            </dt>
-            <dt>登录网进</dt>
-            <dd></dd>
-            <dd>
-                <label>登录账号</label>
-                <input id="txtUserName" type="text" />
-            </dd>
-            <dd>
-                <label>登录密码</label>
-                <input id="txtPwd" type="text" />
-            </dd>
-        </dl>
+    <div class="login_box container">
+        <div class="login_head">
+            <h3>网进科技信息化管理系统</h3>
+        </div>
+        <div class="login_body">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                成功！很好地完成了提交。
+            </div>
+            <div class="login_form">
+                <div class="form-group">
+                    <label for="name">登录账号</label>
+                    <input type="text" class="form-control" id="name" placeholder="请输入登录账号">
+                </div>
+                <div class="form-group">
+                    <label for="name">登录密码</label>
+                    <input type="text" class="form-control" id="name" placeholder="请输入登录密码">
+                </div>
+            </div>
+        </div>
+      
     </div>
+
 
     <!--JS文件引入-->
     <script src="Resources/plugins/js/jquery.min.js"></script>
