@@ -14,31 +14,37 @@
             <h3>网进科技信息化管理系统</h3>
         </div>
         <div class="login_body">
-            <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert"
-                        aria-hidden="true">
-                    &times;
-                </button>
-                成功！很好地完成了提交。
+            <div class="login_msg">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    正在检测当前网络环境
+                </div>
             </div>
+
             <div class="login_form">
                 <div class="form-group">
                     <label for="name">登录账号</label>
-                    <input type="text" class="form-control" id="name" placeholder="请输入登录账号">
+                    <input type="text" class="form-control" id="username" placeholder="请输入登录账号" />
                 </div>
                 <div class="form-group">
                     <label for="name">登录密码</label>
-                    <input type="text" class="form-control" id="name" placeholder="请输入登录密码">
+                    <input type="text" class="form-control" id="pwd" placeholder="请输入登录密码" />
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-warning" id="btnLogin" value="登录" />
                 </div>
             </div>
         </div>
-      
+
     </div>
 
 
     <!--JS文件引入-->
     <script src="Resources/plugins/js/jquery.min.js"></script>
     <script src="Resources/plugins/js/bootstrap.min.js"></script>
+    <script src="Resources/custom/js/login.js"></script>
     <!--JS文件引入结束-->
 </body>
 </html>

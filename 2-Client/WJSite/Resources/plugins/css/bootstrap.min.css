@@ -2887,7 +2887,7 @@ label {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
-    font-weight: 700
+    /*font-weight: 700*/
 }
 
 input[type=search] {
@@ -5424,8 +5424,7 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
 }
 
 .alert {
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 10px;
     border: 1px solid transparent;
     border-radius: 4px
 }
