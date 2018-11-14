@@ -85,6 +85,7 @@
     <Content Include="login.html" />
     <Content Include="Resources\custom\css\login.css" />
     <Content Include="Resources\custom\js\login.js" />
+    <Content Include="Resources\image\bg.png" />
     <Content Include="Resources\image\logo.png" />
     <Content Include="Resources\plugins\css\bootstrap.min.css" />
     <Content Include="Resources\plugins\js\bootstrap.min.js" />
