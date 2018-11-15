@@ -83,13 +83,21 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="login.html" />
+    <Content Include="Resources\custom\css\footer.css" />
     <Content Include="Resources\custom\css\login.css" />
+    <Content Include="Resources\custom\css\style.css" />
+    <Content Include="Resources\custom\js\footer.js" />
     <Content Include="Resources\custom\js\login.js" />
-    <Content Include="Resources\image\bg.png" />
+    <Content Include="Resources\custom\js\test.js" />
+    <Content Include="Resources\image\office.png" />
     <Content Include="Resources\image\logo.png" />
     <Content Include="Resources\plugins\css\bootstrap.min.css" />
+    <Content Include="Resources\plugins\css\font-awesome.css" />
+    <Content Include="Resources\plugins\css\font-awesome.min.css" />
+    <Content Include="Resources\plugins\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\plugins\js\bootstrap.min.js" />
     <Content Include="Resources\plugins\js\jquery.min.js" />
+    <Content Include="Views\common\footer.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Resources\plugins\fonts\fontawesome-webfont.eot" />
+    <Content Include="Resources\plugins\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Resources\plugins\fonts\fontawesome-webfont.woff" />
+    <Content Include="Resources\plugins\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Resources\plugins\fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -112,7 +125,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
