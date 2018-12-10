@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +15,23 @@ namespace WJSite.Controllers
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
+        VerificationCodeHelper vch = new VerificationCodeHelper();
+        [HttpGet]
+        [Route("validateCode")]
+        public string GetVerifcationCode()
+        {
+            string url = "http://localhost:8001/api/Img/GetBitmap";
+            string base64 = HttpUtils.GetData(url);
+            Bitmap bitmap = CommonUtils.Base64StringToImg(base64);
+            string res = vch.GetVerificationCode(bitmap);
+            return res;
+        }
+        [HttpPost]
+        [Route("checkCode")]
+        public string CheckCode([FromBody]ValidateInfo validate)
+        {
+            return vch.CheckCode(validate.point, validate.datelist, validate.timespan);
+        }
         [HttpPost]
         [Route("login")]
         public ResponseMsg Login([FromBody]UserLogin user)

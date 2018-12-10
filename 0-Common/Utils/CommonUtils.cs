@@ -39,13 +39,21 @@ namespace Utils
                     return Convert.ToBase64String(arr);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 //ImgToBase64String 转换失败\nException:" + ex.Message);
                 return null;
             }
         }
-
+        public static byte[] GetPictureData(string imagepath)
+        {
+            /**/////根据图片文件的路径使用文件流打开，并保存为byte[] 
+            FileStream fs = new FileStream(imagepath, FileMode.Open);//可以是其他重载方法 
+            byte[] byData = new byte[fs.Length];
+            fs.Read(byData, 0, byData.Length);
+            fs.Close();
+            return byData;
+        }
         public static Bitmap Base64StringToImg(string Base64Str)
         {
             try
@@ -56,7 +64,7 @@ namespace Utils
                 ms.Close();
                 return bmp;
             }
-            catch
+            catch (Exception ex)
             {
                 //Base64StringToImage 转换失败\nException：" + ex.Message);
                 return null;

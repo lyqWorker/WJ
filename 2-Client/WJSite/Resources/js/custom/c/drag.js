@@ -44,11 +44,11 @@
         $('#drag').drag(__successCallBack, __imgx, __imgy, __codediv);
         $.ajax({ //获取验证码
             type: "get",
-            url: "/api/User/VerificationCode?action=getcode",
-            dataType: "JSON",
+            url: "/api/user/validateCode",
+            dataType: "json",
             async: true,
-            data: { spec: __spec },
             success: function (result) {
+                result = JSON.parse(result);
                 if (result['state'] === -1) {
                     return;
                 }
@@ -59,6 +59,9 @@
                         + result['errmsg'] + "</span>";
                 }
                 var yvalue = result['y'], small = result['small'], array = result['array'], normal = result['normal'];
+                console.log("result", result);
+                console.log("result['array']", result['array']);
+                console.log("result.array:", result.array);
                 __imgx = result['imgx'];
                 __imgy = result['imgy'];
                 $(".cut_bg").css("background-image", "url(" + normal + ")");
@@ -216,8 +219,8 @@
             }
             t2 = new Date();
             $.ajax({ //校验
-                type: "get",
-                url: "/api/User/VerificationCode?action=check",
+                type: "post",
+                url: "/api/User/checkCode",
                 dataType: "JSON",
                 async: true,
                 data:
@@ -227,6 +230,7 @@
                     datelist: arrayDate.join("|")
                 },
                 success: function (result) {
+                    result = JSON.parse(result);
                     if (result['state'] === 0) {
                         //抖动效果
                         for (var i = 1; 4 >= i; i++) {

@@ -10,9 +10,10 @@ using Utils;
 
 namespace Common
 {
-    public class VerififcationCodeHelper
+    public class VerificationCodeHelper
     {
-        public Dictionary<string, string> VerCodeDic = new Dictionary<string, string>();
+        private static Dictionary<string, string> VerCodeDic = new Dictionary<string, string>();
+      
         #region 参数
         //裁剪的小图大小
         private const int shearSize = 40;
@@ -67,6 +68,13 @@ namespace Common
             else
                return "{\"errcode\":0,\"errmsg\":\"校验通过\"}";
         }
+        /// <summary>
+        /// 校验验证
+        /// </summary>
+        /// <param name="pointX"></param>
+        /// <param name="datelist"></param>
+        /// <param name="timespan"></param>
+        /// <returns></returns>
 
         public string CheckCode(string pointX,string datelist,string timespan)
         {
@@ -120,8 +128,7 @@ namespace Common
             }
             if (SlideFeature(datelist))
             {
-                //机器人
-                return "{\"state\":-1,\"msg\":发生错误}";
+                //机器人??
             }
             //校验成功 返回正确坐标
             VerCodeDic["isCheck"] = "OK";
@@ -131,7 +138,7 @@ namespace Common
 
         }
         //返回验证码json
-        public string GetVerificationCode(string imgUrl)
+        public string GetVerificationCode(Bitmap bitmap)
         {
             //第一步: 随机生成坐标
             Random random = new Random();
@@ -142,8 +149,6 @@ namespace Common
             int[] a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
             //打乱a数组的顺序
             int[] array = a.OrderBy(x => Guid.NewGuid()).ToArray();
-            //原图
-            Bitmap bitmap = new Bitmap(imgUrl);
             //裁剪的小图
             Bitmap cutSmallBitmap = CutImage(bitmap, shearSize, shearSize, positionX, positionY);
             string smallImg = "data:image/jpg;base64," + CommonUtils.ImgToBase64String(cutSmallBitmap);
@@ -240,7 +245,7 @@ namespace Common
         /// </summary>
         /// <param name="a">无序数组</param>
         /// <param name="bmp">剪切小图后的原图</param>
-        public Bitmap ConfusionImage(int[] a, Bitmap cutbmp)
+        private Bitmap ConfusionImage(int[] a, Bitmap cutbmp)
         {
             Bitmap[] bmp = new Bitmap[20];
             for (int i = 0; i < 20; i++)
@@ -434,7 +439,7 @@ namespace Common
         /// </summary>
         /// <param name="timeStamp">Unix时间戳格式</param>
         /// <returns>C#格式时间</returns>
-        public DateTime GetTime(string timeStamp)
+        private DateTime GetTime(string timeStamp)
         {
             DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             long lTime = long.Parse(timeStamp + "0000");

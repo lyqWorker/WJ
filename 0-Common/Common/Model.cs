@@ -34,4 +34,11 @@ namespace Common
         }
         public string Content { get; set; }
     }
+
+    public class ValidateInfo
+    {
+        public string point { get; set; }
+        public string timespan { get; set; }
+        public string datelist { get; set; }
+    }
 }
