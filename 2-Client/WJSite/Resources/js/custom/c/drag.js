@@ -10,16 +10,17 @@
         __imgy = 0, //图片高度
         __spec = "",//图片尺寸
         __successCallBack,//校验通过后执行的回调函数
+        
         __codediv;//验证码区域的div
     $.fn.slide = function (options) {
         var imgspec = options.imgspec;
         __successCallBack = options.successCallBack;
         //校验参数
         if (typeof imgspec === 'undefined') {
-            imgspec = "300*300";
+            imgspec = "300*200";
         }
         else if (typeof imgspec !== "string") {
-            imgspec = "300*300";
+            imgspec = "300*200";
         }
         var div = this;
         __codediv = div.attr("id");
@@ -34,7 +35,7 @@
     //载入
     function __init() {
         if (__spec === "")
-            __spec = "300*300";
+            __spec = "348*232";
         var _spec = __spec.split('*');
         __imgx = _spec[0];
         __imgy = _spec[1];
@@ -64,6 +65,7 @@
                 console.log("result.array:", result.array);
                 __imgx = result['imgx'];
                 __imgy = result['imgy'];
+                guid = result.guid;
                 $(".cut_bg").css("background-image", "url(" + normal + ")");
                 $("#xy_img").css("background-image", "url(" + small + ")");
                 $("#xy_img").css("top", yvalue);
@@ -117,13 +119,14 @@
         __codeHTML += "<div id='xy_img'class='xy_img_bord'></div></div><div id='drag'></div>";
         __codeDIV.innerHTML = __codeHTML;
     }
-})(jQuery);
+
+
+
 /*
 *
 * date 2017-02-10
 * 滑块验证码校验
 */
-(function ($) {
     $.fn.drag = function (__successCallBack, imgx, imgy, __codediv) {
         var x, drag = this, isMove = false;
         //添加背景，文字，滑块
@@ -225,6 +228,7 @@
                 async: true,
                 data:
                 {
+                    guid: guid,
                     point: _x,
                     timespan: t2 - t1,
                     datelist: arrayDate.join("|")

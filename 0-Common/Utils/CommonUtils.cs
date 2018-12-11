@@ -24,7 +24,29 @@ namespace Utils
             }
             return false;
         }
-
+        /// <summary>
+        /// 获取图片二进制数据
+        /// </summary>
+        /// <param name="url">图片路径</param>
+        /// <returns></returns>
+        public static byte[] GetImageByUrl(string url)
+        {
+            //将图片以文件流的形式进行缓存
+            using (FileStream fs = new FileStream(url,FileMode.Open,FileAccess.Read))
+            {
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    //将流读入到字节数组中
+                    byte[] bytes = br.ReadBytes((int)fs.Length);
+                    return bytes;
+                }
+            }
+        }
+        /// <summary>
+        /// 获取Bitmap的Base64String
+        /// </summary>
+        /// <param name="bitmap">图像</param>
+        /// <returns></returns>
         public static string ImgToBase64String(Bitmap bitmap)
         {
             try
@@ -41,34 +63,53 @@ namespace Utils
             }
             catch (Exception ex)
             {
-                //ImgToBase64String 转换失败\nException:" + ex.Message);
                 return null;
             }
         }
-        public static byte[] GetPictureData(string imagepath)
-        {
-            /**/////根据图片文件的路径使用文件流打开，并保存为byte[] 
-            FileStream fs = new FileStream(imagepath, FileMode.Open);//可以是其他重载方法 
-            byte[] byData = new byte[fs.Length];
-            fs.Read(byData, 0, byData.Length);
-            fs.Close();
-            return byData;
-        }
-        public static Bitmap Base64StringToImg(string Base64Str)
+        /// <summary>
+        /// Base64String转换为Bitmap
+        /// </summary>
+        /// <param name="Base64Str">Base64Str</param>
+        /// <returns></returns>
+        public static Bitmap Base64StringToImg(string base64Str)
         {
             try
             {
-                byte[] arr = Convert.FromBase64String(Base64Str);
+                byte[] arr = Convert.FromBase64String(base64Str);
                 MemoryStream ms = new MemoryStream(arr);
                 Bitmap bmp = new Bitmap(ms);
                 ms.Close();
                 return bmp;
             }
-            catch (Exception ex)
+            catch
             {
-                //Base64StringToImage 转换失败\nException：" + ex.Message);
-                return null;
+                base64Str = base64Str.Trim('"');
+                try
+                {
+                    byte[] arr = Convert.FromBase64String(base64Str);
+                    MemoryStream ms = new MemoryStream(arr);
+                    Bitmap bmp = new Bitmap(ms);
+                    ms.Close();
+                    return bmp;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
             }
+        }
+        /// <summary>
+        /// 时间戳转为C#格式时间
+        /// </summary>
+        /// <param name="timeStamp">Unix时间戳格式</param>
+        /// <returns>C#格式时间</returns>
+        public static DateTime ConvertDateTime(string timeStamp)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            long lTime = long.Parse(timeStamp + "0000");
+            TimeSpan toNow = new TimeSpan(lTime);
+            DateTime now = dtStart.Add(toNow);
+            return now;
         }
     }
 }

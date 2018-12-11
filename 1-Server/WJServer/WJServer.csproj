@@ -37,6 +37,7 @@
       <HintPath>..\..\..\PwdApp\0-Common\LibFiles\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting">
@@ -64,6 +65,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\0-Common\Common\Common.csproj">
+      <Project>{a41a7e97-9413-469a-9b12-a139223df6f5}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\0-Common\Utils\Utils.csproj">
       <Project>{f9b5bef5-ff97-4863-b1cf-7a8091a314a5}</Project>
       <Name>Utils</Name>

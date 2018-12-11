@@ -15,22 +15,25 @@ namespace WJSite.Controllers
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
-        VerificationCodeHelper vch = new VerificationCodeHelper();
+       
         [HttpGet]
         [Route("validateCode")]
         public string GetVerifcationCode()
         {
-            string url = "http://localhost:8001/api/Img/GetBitmap";
-            string base64 = HttpUtils.GetData(url);
-            Bitmap bitmap = CommonUtils.Base64StringToImg(base64);
-            string res = vch.GetVerificationCode(bitmap);
+            string url = Path.Combine(WebApiApplication.WJServer, "api/Img/GetValidateImg");
+
+            string result = HttpUtils.GetData(url).Trim('"');
+            Bitmap bitmap = CommonUtils.Base64StringToImg(result);
+            url = Path.Combine(WebApiApplication.WJServer, "api/Validator/AddValidate");
+            string res = WebApiApplication.VCH.GetVerificationCode(bitmap,DateTime.Now, url);
             return res;
         }
         [HttpPost]
         [Route("checkCode")]
-        public string CheckCode([FromBody]ValidateInfo validate)
+        public string CheckCode([FromBody]ValidatePost post)
         {
-            return vch.CheckCode(validate.point, validate.datelist, validate.timespan);
+            string url = Path.Combine(WebApiApplication.WJServer, "api/Validator/GetValidate");
+            return WebApiApplication.VCH.CheckCode(post, url);
         }
         [HttpPost]
         [Route("login")]

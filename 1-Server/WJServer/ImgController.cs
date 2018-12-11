@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -16,15 +17,48 @@ namespace WJServer
     public class ImgController : ApiController
     {
         [HttpGet]
-        public string GetBitmap()
+        public string GetValidateImg()
         {
-            Random random = new Random();
-            int num = random.Next(0, 60);
-            string imgFileName = num.ToString() + ".jpg";
-            string imgUrl = Path.Combine(Program.ImgPath, imgFileName);
-            var base64Str = CommonUtils.ImgToBase64String(new Bitmap(imgUrl));
-            return base64Str;
+            try
+            {
+                Random random = new Random();
+                string imgFileName = random.Next(0, 60) + ".jpg";
+                string url = Path.Combine(Program.ImgFroot, imgFileName);
+                byte[] bytes = CommonUtils.GetImageByUrl(url);
+                return Convert.ToBase64String(bytes);
+            }
+            catch (Exception)
+            {
+                return Program.SpareImgBase64Str;
+            }
         }
-
+    }
+    public class ValidatorController : ApiController
+    {
+        [HttpPost]
+        public string AddValidate([FromBody]ValidateCheckInfo vi)
+        {
+            try
+            {
+                Program.ValidateDic[vi.Guid] = vi;
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return "FALSE";
+            }
+        }
+        [HttpGet]
+        public ValidateCheckInfo GetValidate(string guid)
+        {
+            try
+            {
+                return Program.ValidateDic[guid];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

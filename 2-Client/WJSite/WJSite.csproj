@@ -88,7 +88,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="HtmlPage1.html" />
+    <Content Include="index.html" />
     <Content Include="login.html" />
     <Content Include="Resources\css\custom\c\drag.css" />
     <Content Include="Resources\css\custom\c\iconfont.css" />
@@ -101,7 +101,8 @@
     <Content Include="Resources\css\custom\c\style.css" />
     <Content Include="Resources\image\photo.jpg" />
     <Content Include="Resources\image\mis.png" />
-    <Content Include="Resources\image\tx.png" />
+    <Content Include="Resources\image\shield.png" />
+    <Content Include="Resources\image\shieldbule.png" />
     <Content Include="Resources\js\custom\c\common.js" />
     <Content Include="Resources\js\custom\c\drag.js" />
     <Content Include="Resources\js\custom\y\login.js" />

@@ -10,6 +10,7 @@
     <!--CSS文件引入-->
     <link href="Resources/css/plugins/bootstrap.min.css" rel="stylesheet" />
     <link href="Resources/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Resources/css/custom/c/drag.css" rel="stylesheet" />
     <link href="Resources/css/custom/c/style.css" rel="stylesheet" />
     <link href="Resources/css/custom/y/login.css" rel="stylesheet" />
     <!--CSS文件引入结束-->
@@ -66,7 +67,12 @@
                             </span>
                         </p>
                         <div class="input-fill">
-                            <input type="button" class="btn-verification" value="点击验证">
+                            <button class="btn-verification">
+                                <img id="shield" src="Resources/image/shield.png" />
+                                &nbsp;点击完成验证
+                            </button>
+                            <div id="verification">
+                            </div>
                         </div>
                     </div>
                     <div class="input_sub">
@@ -83,6 +89,7 @@
     <!--JS文件引入-->
     <script src="Resources/js/plugins/jquery.min.js"></script>
     <script src="Resources/js/plugins/bootstrap.min.js"></script>
+    <script src="Resources/js/custom/c/drag.js"></script>
     <script src="Resources/js/custom/y/login.js"></script>
     <script src="Resources/js/custom/c/common.js"></script>
     <!--JS文件引入结束-->

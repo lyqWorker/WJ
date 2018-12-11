@@ -35,10 +35,19 @@ namespace Common
         public string Content { get; set; }
     }
 
-    public class ValidateInfo
+    public class ValidatePost
     {
+        public string guid { get; set; }
         public string point { get; set; }
         public string timespan { get; set; }
         public string datelist { get; set; }
+    }
+    public class ValidateCheckInfo
+    {
+        public string Guid { get; set; }
+        public string Code { get; set; }
+        public int ErrorNum { get; set; }
+        public bool IsCheck { get; set; }
+        public DateTime ReqTime { get; set; }
     }
 }

@@ -12,19 +12,17 @@ namespace Common
 {
     public class VerificationCodeHelper
     {
-        private static Dictionary<string, string> VerCodeDic = new Dictionary<string, string>();
+        //public Dictionary<string, ValidateInfo> VerCodeDic = new Dictionary<string, ValidateInfo>();
       
         #region 参数
         //裁剪的小图大小
         private const int shearSize = 40;
-        //原始图片所在路径 300*300
-        private string path;
         //原始图片数量
         private const int imgCount = 60;
         //原始图片宽,单位:px
         private int imgWidth = 300;
         //原始图片高,单位:px
-        private int imgHeight = 300;
+        private int imgHeight = 200;
         //裁剪位置X轴最小位置
         private int minRangeX = 30;
         //裁剪位置Y轴最小位置
@@ -32,19 +30,15 @@ namespace Common
         //裁剪位置X轴最大位置
         private int maxRangeX = 240;
         //裁剪位置Y轴最大位置
-        private int maxRangeY = 200;
+        private int maxRangeY = 150;
         //裁剪X轴大小，裁剪成20张上下10张
         private int cutX = 30;
         //裁剪Y轴大小，裁剪成20张上下10张
-        private int cutY = 150;
+        private int cutY = 100;
         //小图相对于原图左上角的x坐标,并保存到session用于校验
         private int positionX;
         //小图相对于原图左上角的y坐标,y坐标返回前端
         private int positionY;
-        //action命令
-        private ActionType actionType;
-        //图片规格列表 默认300*300
-        private string[] imgspecList = { "300*300", "300*200", "200*100" };
         //允许误差 单位像素
         private const int Deviation = 5;
         //是否跨域访问 在将项目做成第三方使用时可用跨域解决方案 所有的session替换成可共用的变量(Redis)
@@ -52,22 +46,20 @@ namespace Common
         //最大错误次数
         private const int MaxErrorNum = 4;
         #endregion
-
-
-
+        
         /// <summary>
         /// 后台校验验证是否被伪造
         /// </summary>
-        public string CheckResult()
-        {
-            //校验成功 返回正确坐标
-            if (VerCodeDic["isCheck"] == null)
-               return "{\"errcode\":-1,\"errmsg\":\"校验未通过，未进行过校验\"}";
-            else if (VerCodeDic["isCheck"].ToString() != "OK")
-                return "{\"errcode\":-1,\"errmsg\":\"校验未通过\"}";
-            else
-               return "{\"errcode\":0,\"errmsg\":\"校验通过\"}";
-        }
+        //public string CheckResult()
+        //{
+        //    //校验成功 返回正确坐标
+        //    if (VerCodeDic["isCheck"] == null)
+        //       return "{\"errcode\":-1,\"errmsg\":\"校验未通过，未进行过校验\"}";
+        //    else if (VerCodeDic["isCheck"].ToString() != "OK")
+        //        return "{\"errcode\":-1,\"errmsg\":\"校验未通过\"}";
+        //    else
+        //       return "{\"errcode\":0,\"errmsg\":\"校验通过\"}";
+        //}
         /// <summary>
         /// 校验验证
         /// </summary>
@@ -76,20 +68,22 @@ namespace Common
         /// <param name="timespan"></param>
         /// <returns></returns>
 
-        public string CheckCode(string pointX,string datelist,string timespan)
+        public string CheckCode(ValidatePost post,string url)
         {
-            if (VerCodeDic["code"] == null|| VerCodeDic["code"].Length==0)
+            url = url + "?guid=" + post.guid;
+            var validateInfo = HttpUtils.GetData<ValidateCheckInfo>(url);
+            if (validateInfo.Code == null|| validateInfo.Code.Length==0)
             {
                 return "{\"state\":-1,\"msg\":发生错误}";
             }
-            if (string.IsNullOrEmpty(pointX))
+            if (string.IsNullOrEmpty(post.point))
             {
                 return "{\"state\":-1,\"msg\":未取到坐标值}";
             }
             int oldPoint = 0, nowPoint = 0;
             try
             {
-                oldPoint = int.Parse(VerCodeDic["code"]);
+                oldPoint = int.Parse(validateInfo.Code);
             }
             catch
             {
@@ -97,7 +91,7 @@ namespace Common
             }
             try
             {
-                nowPoint = int.Parse(pointX);
+                nowPoint = int.Parse(post.point);
             }
             catch
             {
@@ -109,7 +103,7 @@ namespace Common
                 int checkCount = 0;
                 try
                 {
-                    checkCount = int.Parse(VerCodeDic["code_errornum"]);
+                    checkCount = validateInfo.ErrorNum;
                 }
                 catch
                 {
@@ -119,33 +113,41 @@ namespace Common
                 if (checkCount > MaxErrorNum)
                 {
                     //超过最大错误次数后不再校验
-                    VerCodeDic["code"] = null;
+                    validateInfo.Code = null;
                     return "{\"state\":-1,\"msg\":" + checkCount + "}";
                 }
-                VerCodeDic["code_errornum"] = checkCount.ToString();
+                validateInfo.ErrorNum = checkCount;
                 //返回错误次数
                 return "{\"state\":-1,\"msg\":" + checkCount + "}";
             }
-            if (SlideFeature(datelist))
+            if (SlideFeature(post.datelist))
             {
                 //机器人??
             }
             //校验成功 返回正确坐标
-            VerCodeDic["isCheck"] = "OK";
-            VerCodeDic["code_errornum"] = null;
-            VerCodeDic["code"] = null;
+            //VerCodeDic.Remove(post.guid);
             return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";
 
         }
         //返回验证码json
-        public string GetVerificationCode(Bitmap bitmap)
+        public string GetVerificationCode(Bitmap bitmap,DateTime reqTime, string url)
         {
             //第一步: 随机生成坐标
             Random random = new Random();
             positionX = random.Next(minRangeX, maxRangeX);
-            positionY = random.Next(minRangeY, minRangeY);
-            VerCodeDic["code"] = positionX.ToString();
-            VerCodeDic["code_errornum"] = null;
+            positionY = random.Next(minRangeY, maxRangeY);
+            string guid = Guid.NewGuid().ToString();
+            ValidateCheckInfo vi = new ValidateCheckInfo()
+            {
+                Guid = guid,
+                Code = positionX.ToString(),
+                ErrorNum = -1,
+                IsCheck = false,
+                ReqTime = reqTime
+            };
+
+            string result = HttpUtils.PostData(url, vi);
+            //VerCodeDic[guid] = vi;
             int[] a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
             //打乱a数组的顺序
             int[] array = a.OrderBy(x => Guid.NewGuid()).ToArray();
@@ -165,6 +167,7 @@ namespace Common
             jObject["imgy"] = imgHeight;
             jObject["small"] = smallImg;
             jObject["normal"] = resultImg;
+            jObject["guid"] = guid;
             /* errcode: 状态值 成功为0
              * y:裁剪图片y轴位置
              * small：小图字符串
@@ -313,7 +316,7 @@ namespace Common
                 if (__array[i + 1, 1] - __array[i, 1] == 0)
                     __timeSpan = 1;
                 else
-                    __timeSpan = (GetTime(__array[i + 1, 1].ToString()) - GetTime(__array[i, 1].ToString())).Milliseconds;
+                    __timeSpan = (CommonUtils.ConvertDateTime(__array[i + 1, 1].ToString()) - CommonUtils.ConvertDateTime(__array[i, 1].ToString())).Milliseconds;
                 __v[i] = (double)1000 * Math.Abs(__array[i + 1, 0] - __array[i, 0]) / __timeSpan;//有可能移过再一回来 这里只取正值
                 __a[i] = (double)1000 * __v[i] / __timeSpan;
                 __totaldate += __timeSpan;
@@ -434,19 +437,7 @@ namespace Common
             //    SQLiteHelper.ExecuteNonQuery(ls_sql);
             //}
         }
-        /// <summary>
-        /// 时间戳转为C#格式时间
-        /// </summary>
-        /// <param name="timeStamp">Unix时间戳格式</param>
-        /// <returns>C#格式时间</returns>
-        private DateTime GetTime(string timeStamp)
-        {
-            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-            long lTime = long.Parse(timeStamp + "0000");
-            TimeSpan toNow = new TimeSpan(lTime);
-            DateTime now = dtStart.Add(toNow);
-            return now;
-        }
+       
     }
     public enum ActionType
     {

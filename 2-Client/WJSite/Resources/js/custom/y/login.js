@@ -46,6 +46,17 @@
                 break;
         }
     }
+    //
+    var changeImg = function () {
+        var arry = $('#shield')[0].src.split('/');
+        var imgName = arry[arry.length - 1];
+        if (imgName == "shield.png") {
+            $("#shield").attr('src', 'Resources/image/shieldbule.png');
+        }
+        if (imgName == "shieldbule.png") {
+            $("#shield").attr('src', 'Resources/image/shield.png');
+        }
+    }
     //隐藏错误信息
     var hideWarning = function () {
         var id = $(this)[0].id;
@@ -86,15 +97,28 @@
 
     }
    
-
+    //
+    var showValidatorImg = function () {
+        $('#verification').show();
+    }
 
 
     return {
         init: function () {
-            getVetificationCode();
+            //getVetificationCode();
+
             $('#btnLogin').on('click', l);
             $('#txtLoginName').on('focus', hideWarning);
             $('#txtPwd').on('focus', hideWarning);
+            $('.btn-verification').on("mouseover", changeImg);
+            $('.btn-verification').on("mouseout", changeImg);
+            $('.btn-verification').on("click", showValidatorImg);
+            $("#verification").slide({
+                //验证后的回调
+                successCallBack: function () {
+
+                }
+            });
         }()
     };
 }()
