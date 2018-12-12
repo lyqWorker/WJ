@@ -217,8 +217,8 @@ namespace Common
             bt = PTransparentAdjust(bt, 120);
             // 添加水印 
             grap.DrawImage(bt, x, y, cutWidth, cutHeight);
-            grap.Dispose();
-            g1.Dispose();
+            //grap.Dispose();
+            //g1.Dispose();
             return oldBmp;
         }
         /// <summary>
