@@ -1,16 +1,16 @@
 #drag {
     position: relative;
     background-color: #e8e8e8;
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
     text-align: center;
 }
 #drag .handler {
         position: absolute;
         top: 0px;
         left: 0px;
-        width: 36px;
-        height: 28px;
+        width: 40px;
+        height: 35px;
         border: 1px solid #ccc;
         cursor: move;
 }
@@ -25,8 +25,9 @@
 /*µ×²¿*/
 #drag .drag_bg {
     background-color: #7ac23c;
-    height: 30px;
+    height: 35px;
     width: 0px;
+    margin-top:10px;
 }
 /*µ×²¿ÎÄ×Ö*/
 #drag .drag_text {

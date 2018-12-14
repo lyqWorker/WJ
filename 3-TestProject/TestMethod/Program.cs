@@ -12,9 +12,10 @@ namespace TestMethod
 {
     class Program
     {
-        public static string ImgPath = "C:\\VCodeImg\\";
         static void Main(string[] args)
         {
+            AIHelper ai = new AIHelper();
+            ai.Chat();
         }
 
     }

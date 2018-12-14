@@ -24,16 +24,15 @@ namespace WJSite.Controllers
 
             string result = HttpUtils.GetData(url).Trim('"');
             Bitmap bitmap = CommonUtils.Base64StringToImg(result);
-            url = Path.Combine(WebApiApplication.WJServer, "api/Validator/AddValidate");
-            string res = WebApiApplication.VCH.GetVerificationCode(bitmap,DateTime.Now, url);
-            return res;
+            //url = Path.Combine(WebApiApplication.WJServer, "api/Validator/AddValidate");
+            return WebApiApplication.VCH.GetVerificationCode(bitmap, DateTime.Now); ;
         }
         [HttpPost]
         [Route("checkCode")]
         public string CheckCode([FromBody]ValidatePost post)
         {
-            string url = Path.Combine(WebApiApplication.WJServer, "api/Validator/GetValidate");
-            return WebApiApplication.VCH.CheckCode(post, url);
+            //string url = Path.Combine(WebApiApplication.WJServer, "api/Validator/GetValidate");
+            return WebApiApplication.VCH.CheckCode(post);
         }
         [HttpPost]
         [Route("login")]

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -12,7 +13,7 @@ namespace Common
 {
     public class VerificationCodeHelper
     {
-        //public Dictionary<string, ValidateInfo> VerCodeDic = new Dictionary<string, ValidateInfo>();
+        public ConcurrentDictionary<string, ValidateCheckInfo> VerCodeDic = new ConcurrentDictionary<string, ValidateCheckInfo>();
       
         #region 参数
         //裁剪的小图大小
@@ -40,26 +41,26 @@ namespace Common
         //小图相对于原图左上角的y坐标,y坐标返回前端
         private int positionY;
         //允许误差 单位像素
-        private const int Deviation = 5;
+        private const int Deviation = 3;
         //是否跨域访问 在将项目做成第三方使用时可用跨域解决方案 所有的session替换成可共用的变量(Redis)
         private bool IsCallback = false;
         //最大错误次数
-        private const int MaxErrorNum = 4;
+        private const int MaxErrorNum = 3;
         #endregion
-        
+
         /// <summary>
         /// 后台校验验证是否被伪造
         /// </summary>
-        //public string CheckResult()
-        //{
-        //    //校验成功 返回正确坐标
-        //    if (VerCodeDic["isCheck"] == null)
-        //       return "{\"errcode\":-1,\"errmsg\":\"校验未通过，未进行过校验\"}";
-        //    else if (VerCodeDic["isCheck"].ToString() != "OK")
-        //        return "{\"errcode\":-1,\"errmsg\":\"校验未通过\"}";
-        //    else
-        //       return "{\"errcode\":0,\"errmsg\":\"校验通过\"}";
-        //}
+        public string CheckResult()
+        {
+            //校验成功 返回正确坐标
+            if (VerCodeDic["isCheck"] == null)
+                return "{\"errcode\":-1,\"errmsg\":\"校验未通过，未进行过校验\"}";
+            else if (VerCodeDic["isCheck"].ToString() != "OK")
+                return "{\"errcode\":-1,\"errmsg\":\"校验未通过\"}";
+            else
+                return "{\"errcode\":0,\"errmsg\":\"校验通过\"}";
+        }
         /// <summary>
         /// 校验验证
         /// </summary>
@@ -68,17 +69,27 @@ namespace Common
         /// <param name="timespan"></param>
         /// <returns></returns>
 
-        public string CheckCode(ValidatePost post,string url)
+       // public string CheckCode(ValidatePost post, string url)
+        public string CheckCode(ValidatePost post)
         {
-            url = url + "?guid=" + post.guid;
-            var validateInfo = HttpUtils.GetData<ValidateCheckInfo>(url);
-            if (validateInfo.Code == null|| validateInfo.Code.Length==0)
+            //url = url + "?guid=" + post.guid;
+            //var validateInfo = HttpUtils.GetData<ValidateCheckInfo>(url);
+            //if (validateInfo.Code == null|| validateInfo.Code.Length==0)
+            //{
+            //    return "{\"state\":-1,\"msg\":发生错误}";
+            //}
+            if (!VerCodeDic.ContainsKey(post.guid))
             {
-                return "{\"state\":-1,\"msg\":发生错误}";
+                return "{\"state\":-404,\"msg\":\"没有验证码\"}";
+            }
+            var validateInfo = VerCodeDic[post.guid];
+            if (validateInfo.Code == null || validateInfo.Code.Length == 0)
+            {
+                return "{\"state\":-1,\"msg\":\"发生错误\"}";
             }
             if (string.IsNullOrEmpty(post.point))
             {
-                return "{\"state\":-1,\"msg\":未取到坐标值}";
+                return "{\"state\":-1,\"msg\":\"未取到坐标值\"}";
             }
             int oldPoint = 0, nowPoint = 0;
             try
@@ -87,7 +98,7 @@ namespace Common
             }
             catch
             {
-                return "{\"state\":-1,\"msg\":发生错误}";
+                return "{\"state\":-1,\"msg\":\"发生错误\"}";
             }
             try
             {
@@ -95,7 +106,7 @@ namespace Common
             }
             catch
             {
-                return "{\"state\":-1,\"msg\":获取到坐标值不正确}";
+                return "{\"state\":-1,\"msg\":\"获取到坐标值不正确\"}";
             }
             //错误
             if (Math.Abs(oldPoint - nowPoint) > Deviation)
@@ -113,11 +124,13 @@ namespace Common
                 if (checkCount > MaxErrorNum)
                 {
                     //超过最大错误次数后不再校验
-                    validateInfo.Code = null;
+                    VerCodeDic.TryRemove(post.guid, out validateInfo);
                     return "{\"state\":-1,\"msg\":" + checkCount + "}";
                 }
-                validateInfo.ErrorNum = checkCount;
+                //url = "http://localhost:8001/api/Validator/GetUpdateRes?guid=" + post.guid + "&num=" + checkCount;
+                //string result = HttpUtils.GetData(url);
                 //返回错误次数
+                validateInfo.ErrorNum = checkCount;
                 return "{\"state\":-1,\"msg\":" + checkCount + "}";
             }
             if (SlideFeature(post.datelist))
@@ -125,12 +138,14 @@ namespace Common
                 //机器人??
             }
             //校验成功 返回正确坐标
-            //VerCodeDic.Remove(post.guid);
+            var info = VerCodeDic[post.guid];
+            VerCodeDic.TryRemove(post.guid, out info);
             return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";
 
         }
         //返回验证码json
-        public string GetVerificationCode(Bitmap bitmap,DateTime reqTime, string url)
+       // public string GetVerificationCode(Bitmap bitmap, DateTime reqTime, string url)
+        public string GetVerificationCode(Bitmap bitmap,DateTime reqTime)
         {
             //第一步: 随机生成坐标
             Random random = new Random();
@@ -141,13 +156,13 @@ namespace Common
             {
                 Guid = guid,
                 Code = positionX.ToString(),
-                ErrorNum = -1,
+                ErrorNum = 0,
                 IsCheck = false,
                 ReqTime = reqTime
             };
 
-            string result = HttpUtils.PostData(url, vi);
-            //VerCodeDic[guid] = vi;
+            //string result = HttpUtils.PostData(url, vi);
+            VerCodeDic[guid] = vi;
             int[] a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
             //打乱a数组的顺序
             int[] array = a.OrderBy(x => Guid.NewGuid()).ToArray();
@@ -214,7 +229,7 @@ namespace Common
             Bitmap bt = new Bitmap(cutWidth, cutHeight);
             Graphics g1 = Graphics.FromImage(bt);  //创建b1的Graphics
             g1.FillRectangle(Brushes.Black, new Rectangle(0, 0, cutWidth, cutHeight));   //把b1涂成红色
-            bt = PTransparentAdjust(bt, 120);
+            bt = PTransparentAdjust(bt, 170);
             // 添加水印 
             grap.DrawImage(bt, x, y, cutWidth, cutHeight);
             //grap.Dispose();

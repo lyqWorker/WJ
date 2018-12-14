@@ -55,9 +55,23 @@ namespace WJServer
             {
                 return Program.ValidateDic[guid];
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
+            }
+        }
+        [HttpGet]
+        public string GetUpdateRes(string guid,int num)
+        {
+            try
+            {
+                var item = Program.ValidateDic[guid];
+                item.ErrorNum = num;
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return "FALSE";
             }
         }
     }

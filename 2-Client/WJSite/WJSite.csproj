@@ -88,7 +88,6 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
     <Content Include="login.html" />
     <Content Include="Resources\css\custom\c\drag.css" />
     <Content Include="Resources\css\custom\c\iconfont.css" />
@@ -137,6 +136,7 @@
     <Content Include="Resources\font-awesome-4.3.0\fonts\fontawesome-webfont.woff" />
     <Content Include="Resources\font-awesome-4.3.0\fonts\fontawesome-webfont.woff2" />
     <Content Include="Resources\font-awesome-4.3.0\fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

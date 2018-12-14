@@ -1,11 +1,4 @@
-﻿/* 
-* drag 1.1
-* date 2017-02-10
-* 获取滑块验证码
-* JavaScript工具推荐：
-* http://tool.lu/js
-*/
-(function ($) {
+﻿(function ($) {
     var __imgx = 0, //图片宽度
         __imgy = 0, //图片高度
         __spec = "",//图片尺寸
@@ -42,7 +35,7 @@
         $("#" + __codediv).css("width", __imgx);
         $("#" + __codediv).css("height", parseInt(__imgy) + 34);
         CreadeCodeDiv();
-        $('#drag').drag(__successCallBack, __imgx, __imgy, __codediv);
+       
         $.ajax({ //获取验证码
             type: "get",
             url: "/api/user/validateCode",
@@ -95,6 +88,7 @@
                 }
                 //完成,移除提示
                 $(".vcode-hints").remove();
+                $('#drag').drag(__successCallBack, __imgx, __imgy, __codediv);
             },
             beforeSend: function () {
             }
@@ -109,7 +103,7 @@
     function CreadeCodeDiv() {
         var __codeDIV = document.getElementById(__codediv);
         __codeDIV.innerHTML = '';
-        var __codeHTML = "<div style='width:" + __imgx + "px;height:" + __imgy + "px;background-color:#e8e8e8;'>";
+        var __codeHTML = "<div style='width:" + __imgx + "px;height:" + __imgy + "px;background-color:#fff;'>";
         //正在载入提示文字
         __codeHTML += "<div class='vcode-hints'style='width:" + __imgx + "px;line-height:" + (__imgy / 100) * 7 + ";'>\u6b63\u5728\u8f7d\u5165...</div>";
         for (var i = 0; i < 20; i++) {
@@ -123,8 +117,6 @@
 
 
 /*
-*
-* date 2017-02-10
 * 滑块验证码校验
 */
     $.fn.drag = function (__successCallBack, imgx, imgy, __codediv) {
@@ -163,8 +155,11 @@
         });//移动鼠标
         $(document).mouseup(function (e) {
             dragmovend(e.pageX);
-        });//松开鼠标
-        handler.mouseout(function (e) { });//鼠标移出元素
+        });
+        //松开鼠标
+        handler.mouseout(function (e) {
+        });
+        //鼠标移出元素
         handler.on("touchstart", function (e) {
             dragstart(e.originalEvent.touches[0].pageX);
             //阻止页面的滑动默认事件
@@ -236,13 +231,6 @@
                 success: function (result) {
                     result = JSON.parse(result);
                     if (result['state'] === 0) {
-                        //抖动效果
-                        for (var i = 1; 4 >= i; i++) {
-                            $xy_img.animate({ left: _x - (40 - 10 * i) }, 50);
-                            $xy_img.animate({ left: _x + 2 * (40 - 10 * i) }, 50, function () {
-                                $xy_img.css({ 'left': result['data'] });
-                            });
-                        }
                         handler.css({ 'left': maxWidth });
                         drag_bg.css({ 'width': maxWidth });
                         $xy_img.removeClass('xy_img_bord');
@@ -257,7 +245,7 @@
                         $xy_img.animate({ 'left': 0 }, 300);
                         handler.animate({ 'left': 0 }, 300);
                         drag_bg.animate({ 'width': 0 }, 300);
-                        if (result['msg'] > 4) {
+                        if (result['msg'] > 3) {
                             //超过最大错误次数限制 刷新验证码
                             $("#" + __codediv).refresh();
                             console.log("%cVerificationCode Refresh", "color:blue");
