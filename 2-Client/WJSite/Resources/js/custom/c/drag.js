@@ -3,7 +3,7 @@
         __imgy = 0, //图片高度
         __spec = "",//图片尺寸
         __successCallBack,//校验通过后执行的回调函数
-        
+        guid,
         __codediv;//验证码区域的div
     $.fn.slide = function (options) {
         var imgspec = options.imgspec;
@@ -41,24 +41,20 @@
             url: "/api/user/validateCode",
             dataType: "json",
             async: true,
-            success: function (result) {
-                result = JSON.parse(result);
-                if (result['state'] === -1) {
+            success: function (data) {
+                console.log(data);
+                if (data.state === -1) {
                     return;
                 }
-                var errcode = result['errcode'];
-                if (errcode !== 0) {
+                if (data.State !== 0) {
                     document.getElementById(__codediv).innerHTML =
                         "<span style='color:red'>\u9a8c\u8bc1\u7801\u83b7\u53d6\u5931\u8d25\u002c"
-                        + result['errmsg'] + "</span>";
+                    + data['errmsg'] + "</span>";
                 }
-                var yvalue = result['y'], small = result['small'], array = result['array'], normal = result['normal'];
-                console.log("result", result);
-                console.log("result['array']", result['array']);
-                console.log("result.array:", result.array);
-                __imgx = result['imgx'];
-                __imgy = result['imgy'];
-                guid = result.guid;
+                var yvalue = data.PointY, small = data.SmallImg, array = data.LawArry, normal = data.ResultImg;
+                __imgx = data.Width;
+                __imgy = data.Height;
+                guid = data.Guid;
                 $(".cut_bg").css("background-image", "url(" + normal + ")");
                 $("#xy_img").css("background-image", "url(" + small + ")");
                 $("#xy_img").css("top", yvalue);
@@ -219,14 +215,14 @@
             $.ajax({ //校验
                 type: "post",
                 url: "/api/User/checkCode",
-                dataType: "JSON",
+                dataType: "json",
                 async: true,
                 data:
                 {
-                    guid: guid,
-                    point: _x,
-                    timespan: t2 - t1,
-                    datelist: arrayDate.join("|")
+                    Guid: guid,
+                    Point: _x,
+                    Timespan: t2 - t1,
+                    Datelist: arrayDate.join("|")
                 },
                 success: function (result) {
                     result = JSON.parse(result);

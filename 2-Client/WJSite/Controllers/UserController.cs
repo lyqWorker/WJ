@@ -15,24 +15,31 @@ namespace WJSite.Controllers
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
-       
         [HttpGet]
         [Route("validateCode")]
-        public string GetVerifcationCode()
+        public ValidatorCode GetVerifcationCode()
         {
             string url = Path.Combine(WebApiApplication.WJServer, "api/Img/GetValidateImg");
-
             string result = HttpUtils.GetData(url).Trim('"');
             Bitmap bitmap = CommonUtils.Base64StringToImg(result);
-            //url = Path.Combine(WebApiApplication.WJServer, "api/Validator/AddValidate");
-            return WebApiApplication.VCH.GetVerificationCode(bitmap, DateTime.Now); ;
+            return WebApiApplication.VS.GetVerificationCode(bitmap, DateTime.Now); ;
         }
         [HttpPost]
         [Route("checkCode")]
-        public string CheckCode([FromBody]ValidatePost post)
+        public ValidatorCheckResult CheckCode([FromBody]ValidatorCheckPost post)
         {
-            //string url = Path.Combine(WebApiApplication.WJServer, "api/Validator/GetValidate");
-            return WebApiApplication.VCH.CheckCode(post);
+            ValidatorCheckResult result = new ValidatorCheckResult();
+            if (post == null)
+            {
+                result.Msg = "验证失败!";
+                return result;
+            }
+            if (CommonUtils.IsNullStr(post.Guid))
+            {
+                result.Msg = "验证失败!";
+                return result;
+            }
+            return WebApiApplication.VS.CheckCode(post);
         }
         [HttpPost]
         [Route("login")]

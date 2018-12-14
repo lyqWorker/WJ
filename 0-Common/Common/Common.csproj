@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Contract.cs" />
     <Compile Include="Enum.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="Schemas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VerificationCodeHelper.cs" />
+    <Compile Include="ValidatorSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj">

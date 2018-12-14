@@ -11,9 +11,9 @@ using Utils;
 
 namespace Common
 {
-    public class VerificationCodeHelper
+    public class ValidatorSet
     {
-        public ConcurrentDictionary<string, ValidateCheckInfo> VerCodeDic = new ConcurrentDictionary<string, ValidateCheckInfo>();
+        public ConcurrentDictionary<string, ValidatorItem> VerCodeDic = new ConcurrentDictionary<string, ValidatorItem>();
       
         #region 参数
         //裁剪的小图大小
@@ -70,7 +70,7 @@ namespace Common
         /// <returns></returns>
 
        // public string CheckCode(ValidatePost post, string url)
-        public string CheckCode(ValidatePost post)
+        public string CheckCode(ValidatorCheckPost post)
         {
             //url = url + "?guid=" + post.guid;
             //var validateInfo = HttpUtils.GetData<ValidateCheckInfo>(url);
@@ -78,23 +78,23 @@ namespace Common
             //{
             //    return "{\"state\":-1,\"msg\":发生错误}";
             //}
-            if (!VerCodeDic.ContainsKey(post.guid))
+            if (!VerCodeDic.ContainsKey(post.Guid))
             {
                 return "{\"state\":-404,\"msg\":\"没有验证码\"}";
             }
-            var validateInfo = VerCodeDic[post.guid];
-            if (validateInfo.Code == null || validateInfo.Code.Length == 0)
+            var validateInfo = VerCodeDic[post.Guid];
+            if (validateInfo.PointX == null || validateInfo.PointX.Length == 0)
             {
                 return "{\"state\":-1,\"msg\":\"发生错误\"}";
             }
-            if (string.IsNullOrEmpty(post.point))
+            if (string.IsNullOrEmpty(post.Point))
             {
                 return "{\"state\":-1,\"msg\":\"未取到坐标值\"}";
             }
             int oldPoint = 0, nowPoint = 0;
             try
             {
-                oldPoint = int.Parse(validateInfo.Code);
+                oldPoint = int.Parse(validateInfo.PointX);
             }
             catch
             {
@@ -102,7 +102,7 @@ namespace Common
             }
             try
             {
-                nowPoint = int.Parse(post.point);
+                nowPoint = int.Parse(post.Point);
             }
             catch
             {
@@ -124,7 +124,7 @@ namespace Common
                 if (checkCount > MaxErrorNum)
                 {
                     //超过最大错误次数后不再校验
-                    VerCodeDic.TryRemove(post.guid, out validateInfo);
+                    VerCodeDic.TryRemove(post.Guid, out validateInfo);
                     return "{\"state\":-1,\"msg\":" + checkCount + "}";
                 }
                 //url = "http://localhost:8001/api/Validator/GetUpdateRes?guid=" + post.guid + "&num=" + checkCount;
@@ -133,35 +133,33 @@ namespace Common
                 validateInfo.ErrorNum = checkCount;
                 return "{\"state\":-1,\"msg\":" + checkCount + "}";
             }
-            if (SlideFeature(post.datelist))
+            if (SlideFeature(post.Datelist))
             {
                 //机器人??
             }
             //校验成功 返回正确坐标
-            var info = VerCodeDic[post.guid];
-            VerCodeDic.TryRemove(post.guid, out info);
+            var info = VerCodeDic[post.Guid];
+            VerCodeDic.TryRemove(post.Guid, out info);
             return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";
 
         }
         //返回验证码json
        // public string GetVerificationCode(Bitmap bitmap, DateTime reqTime, string url)
-        public string GetVerificationCode(Bitmap bitmap,DateTime reqTime)
+        public ValidatorCode GetVerificationCode(Bitmap bitmap,DateTime reqTime)
         {
             //第一步: 随机生成坐标
             Random random = new Random();
             positionX = random.Next(minRangeX, maxRangeX);
             positionY = random.Next(minRangeY, maxRangeY);
             string guid = Guid.NewGuid().ToString();
-            ValidateCheckInfo vi = new ValidateCheckInfo()
+            ValidatorItem vi = new ValidatorItem()
             {
                 Guid = guid,
-                Code = positionX.ToString(),
+                PointX = positionX.ToString(),
                 ErrorNum = 0,
                 IsCheck = false,
                 ReqTime = reqTime
             };
-
-            //string result = HttpUtils.PostData(url, vi);
             VerCodeDic[guid] = vi;
             int[] a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
             //打乱a数组的顺序
@@ -174,24 +172,18 @@ namespace Common
             //混淆拼接的图
             Bitmap resultBitmap = ConfusionImage(array, cutedBitmap);
             string resultImg = "data:image/jpg;base64," + CommonUtils.ImgToBase64String(resultBitmap);
-            JObject jObject = new JObject();
-            jObject["errcode"] = 0;
-            jObject["y"] = positionY;
-            jObject["array"] = string.Join(",", array);
-            jObject["imgx"] = imgWidth;
-            jObject["imgy"] = imgHeight;
-            jObject["small"] = smallImg;
-            jObject["normal"] = resultImg;
-            jObject["guid"] = guid;
-            /* errcode: 状态值 成功为0
-             * y:裁剪图片y轴位置
-             * small：小图字符串
-             * normal：剪切小图后的原图并按无序数组重新排列后的图
-             * array：无序数组
-             * imgx：原图宽
-             * imgy：原图高
-             */
-            return jObject.ToString();
+            ValidatorCode vc = new ValidatorCode()
+            {
+                Guid = guid,
+                State = 0,
+                PointY = positionY,
+                Width = imgWidth,
+                Height = imgHeight,
+                LawArry = string.Join(",", array),
+                SmallImg = smallImg,
+                ResultImg = resultImg
+            };
+            return vc;
         }
         /// <summary>
         /// 获取裁剪的小图
@@ -454,6 +446,7 @@ namespace Common
         }
        
     }
+   
     public enum ActionType
     {
         /// <summary>

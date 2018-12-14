@@ -13,7 +13,7 @@ namespace WJSite
     public class WebApiApplication : System.Web.HttpApplication
     {
         public static string WJServer = "";
-        public static VerificationCodeHelper VCH;
+        public static ValidatorSet VS;
         //验证码失效时间，单位秒
         private static readonly int LoseSecond = 30;
         //清理线程循环时间，单位秒
@@ -24,7 +24,7 @@ namespace WJSite
 
             WJServer = ConfigurationManager.AppSettings["WJServer"];
 
-            VCH = new VerificationCodeHelper();
+            VS = new ValidatorSet();
 
             Thread clearThread = new Thread(ClearValidate);
             clearThread.Start();
@@ -34,13 +34,13 @@ namespace WJSite
         {
             while (true)
             {
-                foreach (var key in VCH.VerCodeDic.Keys)
+                foreach (var key in VS.VerCodeDic.Keys)
                 {
-                    var timeSpan = DateTime.Now - VCH.VerCodeDic[key].ReqTime;
+                    var timeSpan = DateTime.Now - VS.VerCodeDic[key].ReqTime;
                     if (timeSpan.Seconds > LoseSecond)
                     {
-                        var info = VCH.VerCodeDic[key];
-                        VCH.VerCodeDic.TryRemove(key, out info);
+                        var info = VS.VerCodeDic[key];
+                        VS.VerCodeDic.TryRemove(key, out info);
                     }
                 }
                 Thread.Sleep(SleepTime * 1000);

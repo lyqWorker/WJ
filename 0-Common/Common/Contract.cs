@@ -8,6 +8,5 @@ namespace Common
 {
     public class Contract
     {
-        public static string[] actionList = { "getcode", "check", "checkresult" };
     }
 }
