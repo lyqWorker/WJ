@@ -68,70 +68,26 @@ namespace Common
         /// <param name="datelist"></param>
         /// <param name="timespan"></param>
         /// <returns></returns>
-
-       // public string CheckCode(ValidatePost post, string url)
-        public string CheckCode(ValidatorCheckPost post)
+        public ValidatorCheckResult CheckCode(ValidatorCheckPost post, ValidatorCheckResult result)
         {
-            //url = url + "?guid=" + post.guid;
-            //var validateInfo = HttpUtils.GetData<ValidateCheckInfo>(url);
-            //if (validateInfo.Code == null|| validateInfo.Code.Length==0)
-            //{
-            //    return "{\"state\":-1,\"msg\":发生错误}";
-            //}
             if (!VerCodeDic.ContainsKey(post.Guid))
             {
-                return "{\"state\":-404,\"msg\":\"没有验证码\"}";
+                result.Msg = "验证码秘钥错误";
+                return result;
             }
             var validateInfo = VerCodeDic[post.Guid];
-            if (validateInfo.PointX == null || validateInfo.PointX.Length == 0)
-            {
-                return "{\"state\":-1,\"msg\":\"发生错误\"}";
-            }
-            if (string.IsNullOrEmpty(post.Point))
-            {
-                return "{\"state\":-1,\"msg\":\"未取到坐标值\"}";
-            }
-            int oldPoint = 0, nowPoint = 0;
-            try
-            {
-                oldPoint = int.Parse(validateInfo.PointX);
-            }
-            catch
-            {
-                return "{\"state\":-1,\"msg\":\"发生错误\"}";
-            }
-            try
-            {
-                nowPoint = int.Parse(post.Point);
-            }
-            catch
-            {
-                return "{\"state\":-1,\"msg\":\"获取到坐标值不正确\"}";
-            }
             //错误
-            if (Math.Abs(oldPoint - nowPoint) > Deviation)
+            if (Math.Abs(validateInfo.PointX - post.PointX) > Deviation)
             {
-                int checkCount = 0;
-                try
-                {
-                    checkCount = validateInfo.ErrorNum;
-                }
-                catch
-                {
-                    checkCount = 0;
-                }
-                checkCount++;
-                if (checkCount > MaxErrorNum)
+                validateInfo.ErrorNum++;
+                if (validateInfo.ErrorNum > MaxErrorNum)
                 {
                     //超过最大错误次数后不再校验
                     VerCodeDic.TryRemove(post.Guid, out validateInfo);
-                    return "{\"state\":-1,\"msg\":" + checkCount + "}";
+                    result.Msg = validateInfo.ErrorNum.ToString();
                 }
-                //url = "http://localhost:8001/api/Validator/GetUpdateRes?guid=" + post.guid + "&num=" + checkCount;
-                //string result = HttpUtils.GetData(url);
-                //返回错误次数
-                validateInfo.ErrorNum = checkCount;
-                return "{\"state\":-1,\"msg\":" + checkCount + "}";
+                result.Msg = validateInfo.ErrorNum.ToString();
+                return result;
             }
             if (SlideFeature(post.Datelist))
             {
@@ -140,11 +96,12 @@ namespace Common
             //校验成功 返回正确坐标
             var info = VerCodeDic[post.Guid];
             VerCodeDic.TryRemove(post.Guid, out info);
-            return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";
-
+            result.State = 0;
+            result.Msg = "正确";
+            // return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";
+            return result;
         }
         //返回验证码json
-       // public string GetVerificationCode(Bitmap bitmap, DateTime reqTime, string url)
         public ValidatorCode GetVerificationCode(Bitmap bitmap,DateTime reqTime)
         {
             //第一步: 随机生成坐标
@@ -155,9 +112,9 @@ namespace Common
             ValidatorItem vi = new ValidatorItem()
             {
                 Guid = guid,
-                PointX = positionX.ToString(),
+                PointX = positionX,
                 ErrorNum = 0,
-                IsCheck = false,
+                //IsCheck = false,
                 ReqTime = reqTime
             };
             VerCodeDic[guid] = vi;

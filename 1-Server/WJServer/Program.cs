@@ -22,7 +22,7 @@ namespace WJServer
         //影像文件根目录
         public static string ImgFroot = string.Empty;
         //存储校验信息
-        public static ConcurrentDictionary<string, ValidateCheckInfo> ValidateDic = new ConcurrentDictionary<string, ValidateCheckInfo>();
+        public static ConcurrentDictionary<string, ValidatorItem> ValidateDic = new ConcurrentDictionary<string, ValidatorItem>();
         //验证码失效时间，单位秒
         private static readonly int LoseSecond = 60;
         //清理线程循环时间，单位秒

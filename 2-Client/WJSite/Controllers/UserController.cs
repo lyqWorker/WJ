@@ -39,7 +39,7 @@ namespace WJSite.Controllers
                 result.Msg = "验证失败!";
                 return result;
             }
-            return WebApiApplication.VS.CheckCode(post);
+            return WebApiApplication.VS.CheckCode(post, result);
         }
         [HttpPost]
         [Route("login")]

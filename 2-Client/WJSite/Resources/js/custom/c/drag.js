@@ -42,7 +42,6 @@
             dataType: "json",
             async: true,
             success: function (data) {
-                console.log(data);
                 if (data.state === -1) {
                     return;
                 }
@@ -220,13 +219,13 @@
                 data:
                 {
                     Guid: guid,
-                    Point: _x,
+                    PointX: _x,
                     Timespan: t2 - t1,
                     Datelist: arrayDate.join("|")
                 },
                 success: function (result) {
-                    result = JSON.parse(result);
-                    if (result['state'] === 0) {
+                    console.log(result);
+                    if (result.State === 0) {
                         handler.css({ 'left': maxWidth });
                         drag_bg.css({ 'width': maxWidth });
                         $xy_img.removeClass('xy_img_bord');
@@ -241,13 +240,13 @@
                         $xy_img.animate({ 'left': 0 }, 300);
                         handler.animate({ 'left': 0 }, 300);
                         drag_bg.animate({ 'width': 0 }, 300);
-                        if (result['msg'] > 3) {
+                        if (result.Msg > 3) {
                             //超过最大错误次数限制 刷新验证码
                             $("#" + __codediv).refresh();
                             console.log("%cVerificationCode Refresh", "color:blue");
                         }
                         else {
-                            console.log("%cNumber of errors: " + result['msg'], "color:red");
+                            console.log("%cNumber of errors: " + result.Msg, "color:red");
                         }
                     }
                 },

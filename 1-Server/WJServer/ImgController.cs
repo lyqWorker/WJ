@@ -36,7 +36,7 @@ namespace WJServer
     public class ValidatorController : ApiController
     {
         [HttpPost]
-        public string AddValidate([FromBody]ValidateCheckInfo vi)
+        public string AddValidate([FromBody]ValidatorItem vi)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace WJServer
             }
         }
         [HttpGet]
-        public ValidateCheckInfo GetValidate(string guid)
+        public ValidatorItem GetValidate(string guid)
         {
             try
             {
