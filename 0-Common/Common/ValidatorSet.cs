@@ -68,7 +68,7 @@ namespace Common
         /// <param name="datelist"></param>
         /// <param name="timespan"></param>
         /// <returns></returns>
-        public ValidatorCheckResult CheckCode(ValidatorCheckPost post, ValidatorCheckResult result)
+        public CheckResponse CheckCode(ValidatorCheckPost post, CheckResponse result)
         {
             if (!VerCodeDic.ContainsKey(post.Guid))
             {
@@ -95,7 +95,8 @@ namespace Common
             }
             //校验成功 返回正确坐标
             var info = VerCodeDic[post.Guid];
-            VerCodeDic.TryRemove(post.Guid, out info);
+            info.IsCorrect = true;
+            //VerCodeDic.TryRemove(post.Guid, out info);
             result.State = 0;
             result.Msg = "正确";
             // return "{\"state\":0,\"info\":\"正确\",\"data\":" + oldPoint + "}";

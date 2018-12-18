@@ -15,7 +15,7 @@ namespace WJSite
         public static string WJServer = "";
         public static ValidatorSet VS;
         //验证码失效时间，单位秒
-        private static readonly int LoseSecond = 30;
+        private static readonly int LoseSecond = 40;
         //清理线程循环时间，单位秒
         private static readonly int SleepTime = 10;
         protected void Application_Start()

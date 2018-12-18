@@ -25,6 +25,6 @@ namespace WJEntities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<UserLogin> UserLogins { get; set; }
+        public virtual DbSet<WJUser> WJUsers { get; set; }
     }
 }

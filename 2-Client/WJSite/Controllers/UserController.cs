@@ -26,9 +26,9 @@ namespace WJSite.Controllers
         }
         [HttpPost]
         [Route("checkCode")]
-        public ValidatorCheckResult CheckCode([FromBody]ValidatorCheckPost post)
+        public CheckResponse CheckCode([FromBody]ValidatorCheckPost post)
         {
-            ValidatorCheckResult result = new ValidatorCheckResult();
+            CheckResponse result = new CheckResponse();
             if (post == null)
             {
                 result.Msg = "验证失败!";
@@ -43,39 +43,57 @@ namespace WJSite.Controllers
         }
         [HttpPost]
         [Route("login")]
-        public ResponseMsg Login([FromBody]UserLogin user)
+        public CheckResponse Login([FromBody]WJUser user)
         {
-            var res = new ResponseMsg();
-            if (user == null)
+            var res = new CheckResponse();
+            if (user == null || CommonUtils.IsNullStr(user.UNO) || CommonUtils.IsNullStr(user.PW))
             {
-                res.State = ResponseState.Warining;
-                res.Msg = "param(user) is null";
+                res.Msg = "user schemas is error";
+                res.ErrorItem = "user";
                 return res;
             }
             using (WJCenterEntities ctx = new WJCenterEntities())
             {
-                var item = ctx.UserLogins.Where(p => p.UNO == user.UNO).FirstOrDefault();
+                string uno = user.UNO.Split('|')[0];
+                string guid = user.UNO.Split('|')[1];
+                var item = ctx.WJUsers.Where(p => p.UNO == uno).FirstOrDefault();
                 if (item == null)
                 {
-                    res.State = ResponseState.Warining;
                     res.Msg = "该工号不存在";
+                    res.ErrorItem = "username";
                     return res;
                 }
-                if (item.Status > 0)
+                if (item.ErrorStatus > 0)
                 {
-                    res.State = ResponseState.Warining;
                     res.Msg = "该工号已冻结";
+                    res.ErrorItem = "username";
                     return res;
                 }
+                //后期密码要加密
                 if (item.PW != user.PW)
                 {
-                    res.State = ResponseState.Warining;
                     res.Msg = "密码错误";
+                    res.ErrorItem = "pwd";
                     return res;
                 }
-
+                if (!WebApiApplication.VS.VerCodeDic.ContainsKey(guid))
+                {
+                    res.Msg = "验证码已过期，请重新验证";
+                    res.ErrorItem = "validator";
+                    return res;
+                }
+                var vcode = WebApiApplication.VS.VerCodeDic[guid];
+                if (!vcode.IsCorrect)
+                {
+                    res.Msg = "验证码错误";
+                    res.ErrorItem = "validator";
+                    return res;
+                }
+                res.State = 1;
+                res.Msg = "/Views/main.html";
+                return res;
             }
-            return res;
         } 
+
     }
 }

@@ -104,6 +104,7 @@
     <Content Include="Resources\image\shieldbule.png" />
     <Content Include="Resources\js\custom\c\common.js" />
     <Content Include="Resources\js\custom\c\drag.js" />
+    <Content Include="Resources\js\custom\y\JavaScript.js" />
     <Content Include="Resources\js\custom\y\login.js" />
     <Content Include="Resources\js\custom\y\main.js" />
     <Content Include="Resources\js\custom\c\nav.js" />

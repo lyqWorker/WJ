@@ -5,6 +5,7 @@
         __successCallBack,//校验通过后执行的回调函数
         guid,
         __codediv;//验证码区域的div
+
     $.fn.slide = function (options) {
         var imgspec = options.imgspec;
         __successCallBack = options.successCallBack;
@@ -54,6 +55,7 @@
                 __imgx = data.Width;
                 __imgy = data.Height;
                 guid = data.Guid;
+                $('#guid').text(guid)
                 $(".cut_bg").css("background-image", "url(" + normal + ")");
                 $("#xy_img").css("background-image", "url(" + small + ")");
                 $("#xy_img").css("top", yvalue);
@@ -89,11 +91,15 @@
             }
         });
     }
+
+   
+
     function indexOf(arr, str) {
         if (arr && arr.indexOf) return arr.indexOf(str);
         var len = arr.length;
         for (var i = 0; i < len; i++) { if (arr[i] === str) return i; } return -1;
     }
+
     //绘制验证码结构
     function CreadeCodeDiv() {
         var __codeDIV = document.getElementById(__codediv);
@@ -108,8 +114,6 @@
         __codeHTML += "<div id='xy_img'class='xy_img_bord'></div></div><div id='drag'></div>";
         __codeDIV.innerHTML = __codeHTML;
     }
-
-
 
 /*
 * 滑块验证码校验
@@ -224,14 +228,12 @@
                     Datelist: arrayDate.join("|")
                 },
                 success: function (result) {
-                    console.log(result);
                     if (result.State === 0) {
                         handler.css({ 'left': maxWidth });
                         drag_bg.css({ 'width': maxWidth });
                         $xy_img.removeClass('xy_img_bord');
                         $xy_img.css("border", "1px solid rgb(255,255,255)");
                         $("#drag a").remove();
-                        console.log("%cVerificationCode Verified", "color:green");
                         if (__successCallBack !== undefined)
                             __successCallBack();
                         dragOk();

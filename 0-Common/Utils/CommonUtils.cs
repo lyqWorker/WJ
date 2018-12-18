@@ -18,7 +18,7 @@ namespace Utils
         /// <returns></returns>
         public static bool IsNullStr(string str)
         {
-            if (string.IsNullOrEmpty(str) || str == "undefined")
+            if (string.IsNullOrEmpty(str) || str.Contains("undefined"))
             {
                 return true;
             }

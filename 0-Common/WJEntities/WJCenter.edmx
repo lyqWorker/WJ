@@ -4,46 +4,48 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WJCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="UserLogin">
+    <Schema Namespace="WJCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="WJUsers">
           <Key>
             <PropertyRef Name="UNO" />
           </Key>
-          <Property Name="UNO" Type="int" Nullable="false" />
+          <Property Name="UNO" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PW" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="ErrorStatus" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="WJCenterModelStoreContainer">
-          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WJUsers" EntityType="Self.WJUsers" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WJCenterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="UserLogin">
+        <EntityContainer Name="WJCenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="WJUsers" EntityType="WJCenterModel.WJUser" />
+        </EntityContainer>
+        <EntityType Name="WJUser">
           <Key>
             <PropertyRef Name="UNO" />
           </Key>
-          <Property Name="UNO" Type="Int32" Nullable="false" />
-          <Property Name="PW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="UNO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PW" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorStatus" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="WJCenterEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WJCenterModelStoreContainer" CdmEntityContainer="WJCenterEntities">
-          <EntitySetMapping Name="UserLogins">
-            <EntityTypeMapping TypeName="WJCenterModel.UserLogin">
-              <MappingFragment StoreEntitySet="UserLogin">
-                <ScalarProperty Name="UNO" ColumnName="UNO" />
+          <EntitySetMapping Name="WJUsers">
+            <EntityTypeMapping TypeName="WJCenterModel.WJUser">
+              <MappingFragment StoreEntitySet="WJUsers">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ErrorStatus" ColumnName="ErrorStatus" />
                 <ScalarProperty Name="PW" ColumnName="PW" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UNO" ColumnName="UNO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

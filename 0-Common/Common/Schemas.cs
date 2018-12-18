@@ -7,42 +7,15 @@ using System.Threading.Tasks;
 namespace Common
 {
     //通用接口返回类
-    public class ResponseMsg
-    {
-        private string resmsg;
-        public ResponseState State { get; set; }
-        public string Msg
-        {
-            get
-            {
-                if (State == ResponseState.Success)
-                {
-                    return "调用成功!";
-                }
-                else if (State == ResponseState.Error)
-                {
-                    return "服务器内部错误!";
-                }
-                else
-                {
-                    return resmsg;
-                }
-            }
-            set
-            {
-                resmsg = value;
-            }
-        }
-        public string Content { get; set; }
-    }
-
-    #region 验证码
     //验证码校验结果
-    public class ValidatorCheckResult
+    public class CheckResponse
     {
         public int State { get; set; } = -1;
         public string Msg { get; set; }
+        public string ErrorItem { get; set; }
     }
+
+    #region 验证码
     //验证码校验字段(前台提交验证码校验值)
     public class ValidatorCheckPost
     {

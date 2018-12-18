@@ -12,10 +12,11 @@ namespace WJEntities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserLogin
+    public partial class WJUser
     {
-        public int UNO { get; set; }
+        public string UNO { get; set; }
         public string PW { get; set; }
-        public int Status { get; set; }
+        public int ErrorStatus { get; set; }
+        public int RoleId { get; set; }
     }
 }
