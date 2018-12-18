@@ -63,7 +63,7 @@
     width: 100%;
     margin-top: 40px;
 }
-.input_sub [type=button] {
+.input_sub button {
     width: 100%;
 }
 .btn-verification {

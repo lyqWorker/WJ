@@ -22,7 +22,7 @@ namespace WJSite.Controllers
             string url = Path.Combine(WebApiApplication.WJServer, "api/Img/GetValidateImg");
             string result = HttpUtils.GetData(url).Trim('"');
             Bitmap bitmap = CommonUtils.Base64StringToImg(result);
-            return WebApiApplication.VS.GetVerificationCode(bitmap, DateTime.Now); ;
+            return WebApiApplication.VS.GetVerificationCode(bitmap, DateTime.Now);
         }
         [HttpPost]
         [Route("checkCode")]
@@ -93,7 +93,6 @@ namespace WJSite.Controllers
                 res.Msg = "/Views/main.html";
                 return res;
             }
-        } 
-
+        }
     }
 }

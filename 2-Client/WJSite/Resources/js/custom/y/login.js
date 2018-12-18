@@ -29,12 +29,12 @@
                 $("#btn-verification").removeClass("btn-verification").removeClass("btn-verification-success");
                 $("#btn-verification").addClass("btn-verification-fail");
                 setTimeout(function () {
+                    $("#btn-verification").attr("disabled", false);
                     $('.sp_validator').removeClass('warning_show');
-                    $("#btn-verification").removeClass("btn-verification").removeClass("btn-verification-fail");
-                    $("#btn-verification").addClass("btn-verification");
+                    $("#btn-verification").removeClass("btn-verification").removeClass("btn-verification-fail").addClass("btn-verification");
                     var content = "<div id='shield'></div><span>点击完成验证</span>";
                     $('#btn-verification').html(content);
-                },1000);
+                },1200);
                 break;
             }
             default:
@@ -92,17 +92,32 @@
             },
             dataType: 'json',
             success: function (res) {
-                if (res.State == 1) {
-                    window.location.href = '/Views/main.html';
+                if (res.State === 1) {
+                    window.location.href = res.Msg;
                 }
                 else {
-                    console.log(res.Msg);
+                    loginRes(res);
                 }
             },
             error: function () {
 
+            },
+            beforeSend: function () {
+                $('#btnLogin').button('loading');
+            },
+            complete: function () {
+                $('#btnLogin').button('reset');
             }
         });
+    }
+
+    var loginRes = function (res) {
+        if (res.ErrorItem === "user") {
+
+        }
+        else {
+            showWarning(res.ErrorItem, res.Msg);
+        }
     }
 
     //
@@ -120,8 +135,9 @@
                 var content = "<span class='fa fa-check'></span>&nbsp;&nbsp;<span>验证成功</span>";
                 $('#btn-verification').html(content);
                 $("#btn-verification").attr("disabled", true);
-                $("#btn-verification").removeClass("btn-verification").removeClass("btn-verification-fail");
-                $("#btn-verification").addClass("btn-verification-success");
+                $("#btn-verification").removeClass("btn-verification")
+                                      .removeClass("btn-verification-fail")
+                                      .addClass("btn-verification-success");
             }
         });
         e.stopPropagation();
