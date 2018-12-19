@@ -35,7 +35,7 @@ namespace Common
         public int ErrorNum { get; set; }
         //获取验证码的时间，超时清理
         public DateTime ReqTime { get; set; }
-        //登录再次验证验证码是否通过
+        //标记该验证码是否通过
         public bool IsCorrect { get; set; } = false;
     }
     //验证码信息(前台展示的图片验证码)
