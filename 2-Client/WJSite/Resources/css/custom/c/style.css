@@ -119,12 +119,12 @@
     width: 100%;
     overflow: hidden;
     border-top: 1px solid #e1e1e1;
-    height: 70px;
+    height: 65px;
 }
 .copyright {
     width: 60%;
     margin: auto;
-    padding-top: 28px;
+    padding-top: 23px;
 }
 
 .copyright p {
