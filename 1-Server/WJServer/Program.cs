@@ -21,10 +21,6 @@ namespace WJServer
         public static string ImgIp = ConfigurationManager.AppSettings["ImgIp"];
         //影像文件根目录
         public static string ImgFroot = string.Empty;
-        //存储登录用户
-        public static ConcurrentDictionary<string, ValidatorItem> ValidateDic = new ConcurrentDictionary<string, ValidatorItem>();
-        //清理线程循环时间，单位秒
-        private static readonly int SleepTime = 30;
         //定义一个服务
         private static HttpSelfHostServer Server = null;
         static void Main(string[] args)
@@ -34,10 +30,7 @@ namespace WJServer
             //初始化
             Init();
             //注册服务
-            RegisterApi();
-            //定期清理过期用户
-            Thread clearThread = new Thread(ClearValidate);
-            clearThread.Start();
+            //RegisterApi();
 
             while (true)
             {
@@ -45,22 +38,7 @@ namespace WJServer
             }
         }
 
-        private static void ClearValidate()
-        {
-            while (true)
-            {
-                foreach (var key in ValidateDic.Keys)
-                {
-                    var timeSpan = DateTime.Now - ValidateDic[key].ReqTime;
-                    if (timeSpan.Seconds > LoseSecond)
-                    {
-                        var info = ValidateDic[key];
-                        ValidateDic.TryRemove(key,out info);
-                    }
-                }
-                Thread.Sleep(SleepTime * 1000);
-            }
-        }
+       
 
         private static void Init()
         {
