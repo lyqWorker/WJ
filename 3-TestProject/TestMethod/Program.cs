@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Utils;
@@ -14,43 +15,45 @@ namespace TestMethod
     {
         static void Main(string[] args)
         {
-            #region 测试一
-            //var list1 = new List<Person>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Person p = new Person()
-            //    {
-            //        age = 10 + i,
-            //        name = "机器人" + i + "号"
-            //    };
-            //    list1.Add(p);
-            //}
-            //var list2 = new List<int>();
-            //for (int i = 5; i < 15; i++)
-            //{
-            //    list2.Add(i);
-            //}
-            //var a= list1.RemoveAll(p => list2.Contains(p.age));
-            //var b = list1;
-            #endregion
-
-            var list1 = new List<Person>();
-            for (int i = 0; i < 10; i++)
+            /**RSA加密测试,RSA中的密钥对通过SSL工具生成，生成命令如下： 
+           * 1 生成RSA私钥： 
+           * openssl genrsa -out rsa_private_key.pem 1024 
+           *2 生成RSA公钥 
+           * openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem 
+           * 
+           * 3 将RSA私钥转换成PKCS8格式 
+           * openssl pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt -out rsa_pub_pk8.pem 
+           * 
+           * 直接打开rsa_private_key.pem和rsa_pub_pk8.pem文件就可以获取密钥对内容，获取密钥对内容组成字符串时，注意将换行符删除 
+           * */
+            //rsa_pub_pk8.pem内容
+           
+            //加密字符串  
+            string data = "yangyoushan";
+            string publickey = "";
+            string privatekey = "";
+            using (StreamReader reader = new StreamReader("publicKey.txt"))
             {
-                Person p = new Person()
-                {
-                    age = 10 + i,
-                    name = "机器人" + i + "号"
-                };
-                list1.Add(p);
+                publickey = reader.ReadToEnd();
             }
-            Test(list1);
+            using (StreamReader reader = new StreamReader("privateKey.txt"))
+            {
+                privatekey = reader.ReadToEnd();
+            }
 
+            Console.WriteLine("加密前字符串内容：" + data);
+            //加密  
+            
+            string encrypteddata = RSAUtils.EncryptData(data, publickey, "UTF-8");
+            Console.WriteLine("加密后的字符串为：" + encrypteddata);
+            Console.WriteLine("解密后的字符串内容：" + RSAUtils.DecryptData(encrypteddata, privatekey, "UTF-8"));
+           
 
             Console.ReadKey();
 
 
         }
+      
 
         static void Test(List<Person> list1)
         {

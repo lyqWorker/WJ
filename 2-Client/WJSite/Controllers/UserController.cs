@@ -24,6 +24,7 @@ namespace WJSite.Controllers
             Bitmap bitmap = CommonUtils.Base64StringToImg(result);
             return WebApiApplication.VS.GetVerificationCode(bitmap, DateTime.Now);
         }
+
         [HttpPost]
         [Route("checkCode")]
         public CheckResponse CheckCode([FromBody]ValidatorCheckPost post)
@@ -41,6 +42,7 @@ namespace WJSite.Controllers
             }
             return WebApiApplication.VS.CheckCode(post, result);
         }
+
         [HttpPost]
         [Route("login")]
         public CheckResponse Login([FromBody]WJUser user)
@@ -82,15 +84,16 @@ namespace WJSite.Controllers
                     res.ErrorItem = "validator";
                     return res;
                 }
-                var vcode = WebApiApplication.VS.VerCodeDic[guid];
-                if (!vcode.IsCorrect)
+                if (!WebApiApplication.VS.VerCodeDic[guid].IsCorrect)
                 {
                     res.Msg = "验证码错误";
                     res.ErrorItem = "validator";
                     return res;
                 }
+                //校验通过，登录成功并记录状态
                 res.State = 1;
                 res.Msg = "/Views/main.html";
+
                 return res;
             }
         }

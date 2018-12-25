@@ -33,8 +33,4 @@ namespace WJServer
             }
         }
     }
-    public class ValidatorController : ApiController
-    {
-       
-    }
 }

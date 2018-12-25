@@ -88,6 +88,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="login.html" />
     <Content Include="Resources\css\custom\c\drag.css" />
     <Content Include="Resources\css\custom\c\iconfont.css" />
@@ -114,6 +115,7 @@
     <Content Include="Resources\image\logo.png" />
     <Content Include="Resources\font-awesome-4.3.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\js\plugins\bootstrap.min.js" />
+    <Content Include="Resources\js\plugins\encrypt.min.js" />
     <Content Include="Resources\js\plugins\jquery.min.js" />
     <Content Include="Views\common\footer.html" />
     <Content Include="Views\common\header.html" />

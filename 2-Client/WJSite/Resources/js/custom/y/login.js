@@ -9,6 +9,7 @@
     //显示错误信息
     var showWarning = function (tag, msg) {
         switch (tag) {
+            case 'user':
             case 'username': {
                 $('.sp_loginname').addClass('warning_show');
                 $('.input_loginname>.input').addClass('warning_border');
@@ -96,7 +97,7 @@
                     window.location.href = res.Msg;
                 }
                 else {
-                    loginRes(res);
+                    showWarning(res.ErrorItem, res.Msg);
                 }
             },
             error: function () {
@@ -111,12 +112,11 @@
         });
     }
 
-    var loginRes = function (res) {
-        if (res.ErrorItem === "user") {
-
-        }
-        else {
-            showWarning(res.ErrorItem, res.Msg);
+    var changeShild = function (e) {
+        if (e.type == "mouseover") {
+            $("#shield").attr('src', 'Resources/image/shieldbule.png'); 
+        } else if (e.type == "mouseout") {
+            $("#shield").attr('src', 'Resources/image/shield.png'); 
         }
     }
 
@@ -154,6 +154,7 @@
             $('#txtLoginName').on('focus', hideWarning);
             $('#txtPwd').on('focus', hideWarning);
             $('#btn-verification').on("click", showValidatorImg);
+            $('#btn-verification').on("mouseover mouseout", changeShild);
             $(this).on('click', hideValidator);
         }()
     };

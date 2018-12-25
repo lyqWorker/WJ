@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Resources/js/plugins/jquery.min.js"></script>
+    <script src="Resources/js/plugins/encrypt.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        $.ajax({
+            url: '/api/common/pubKey',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey(data);
+                console.log(encrypt.encrypt("123456789"));
+            },
+            error: function () {
+                console.log("no");
+            }
+        });
+    </script>
+</body>
+</html>

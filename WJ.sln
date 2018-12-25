@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WJServer", "1-Server\WJServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjec", "3-TestProject\TestProjec\TestProjec.csproj", "{19F5E89B-22FD-4194-B18E-5BC3FB98B719}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRedis", "3-TestProject\TestRedis\TestRedis.csproj", "{024F4C0B-E6C4-458C-9722-801774F3C57D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,10 +65,6 @@ Global
 		{19F5E89B-22FD-4194-B18E-5BC3FB98B719}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F5E89B-22FD-4194-B18E-5BC3FB98B719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19F5E89B-22FD-4194-B18E-5BC3FB98B719}.Release|Any CPU.Build.0 = Release|Any CPU
-		{024F4C0B-E6C4-458C-9722-801774F3C57D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{024F4C0B-E6C4-458C-9722-801774F3C57D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{024F4C0B-E6C4-458C-9722-801774F3C57D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{024F4C0B-E6C4-458C-9722-801774F3C57D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,7 +78,6 @@ Global
 		{60339AC5-EC3C-4EE6-AEC1-25AF56FA7FC0} = {6252A57F-83D1-4DDD-A40D-06148B8E022E}
 		{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F} = {5F065C69-8610-4717-A4A8-C4A5363820E9}
 		{19F5E89B-22FD-4194-B18E-5BC3FB98B719} = {6252A57F-83D1-4DDD-A40D-06148B8E022E}
-		{024F4C0B-E6C4-458C-9722-801774F3C57D} = {6252A57F-83D1-4DDD-A40D-06148B8E022E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D22DA0B2-9F93-4C26-886F-BC451D706AD3}

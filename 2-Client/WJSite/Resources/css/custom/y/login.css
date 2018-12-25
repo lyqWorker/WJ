@@ -98,20 +98,16 @@
 }
 #shield {
     display: inline-block;
-    width: 22px;
-    height: 22px;
-    margin-top: 5px;
-    background-image: url('../../../image/shield.png');
+    width: 17px;
+    height: 17px;
+    margin-top: -2px;
 }
 .btn-verification span {
     position: relative;
-    top: -6px;
+    top:1px;
 }
 .btn-verification:hover {
     color: #0266d5;
-}
-.btn-verification:hover #shield {
-    background-image: url('../../../image/shieldbule.png');
 }
 #verification_panel {
     border: 1px solid #e6e6e6;

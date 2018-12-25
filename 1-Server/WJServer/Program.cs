@@ -30,7 +30,7 @@ namespace WJServer
             //初始化
             Init();
             //注册服务
-            //RegisterApi();
+            RegisterApi();
 
             while (true)
             {
