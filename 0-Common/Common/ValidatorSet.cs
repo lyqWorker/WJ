@@ -72,7 +72,7 @@ namespace Common
         {
             if (!VerCodeDic.ContainsKey(post.Guid))
             {
-                result.Msg = "验证码秘钥错误";
+                result.Msg = "验证码错误";
                 return result;
             }
             var validateInfo = VerCodeDic[post.Guid];

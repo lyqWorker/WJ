@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMethod", "3-TestProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WJServer", "1-Server\WJServer\WJServer.csproj", "{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crypto", "0-Common\Crypto\Crypto.csproj", "{C0CA87CA-2154-48FE-9E25-BEE0705316F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0CA87CA-2154-48FE-9E25-BEE0705316F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0CA87CA-2154-48FE-9E25-BEE0705316F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0CA87CA-2154-48FE-9E25-BEE0705316F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0CA87CA-2154-48FE-9E25-BEE0705316F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{5B6657D8-17F7-4EF1-844C-AA8072366220} = {16784E4C-DB69-4330-BBE8-2BEBAD1465F7}
 		{60339AC5-EC3C-4EE6-AEC1-25AF56FA7FC0} = {6252A57F-83D1-4DDD-A40D-06148B8E022E}
 		{F4FB8BD7-54E4-4424-862E-5F30B0EF5E6F} = {5F065C69-8610-4717-A4A8-C4A5363820E9}
+		{C0CA87CA-2154-48FE-9E25-BEE0705316F3} = {16784E4C-DB69-4330-BBE8-2BEBAD1465F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D22DA0B2-9F93-4C26-886F-BC451D706AD3}

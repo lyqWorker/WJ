@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    //通用接口返回类
-    //验证码校验结果
+    #region 通用的请求校验的返回类
+    /*
+     * 1.验证码校验结果
+     * 2.登录校验结果
+     */
     public class CheckResponse
     {
         public int State { get; set; } = -1;
         public string Msg { get; set; }
         public string ErrorItem { get; set; }
     }
+    #endregion
 
     #region 验证码
     //验证码校验字段(前台提交验证码校验值)
@@ -57,9 +61,7 @@ namespace Common
         public int PointY { get; set; }
         //状态码
         public int State { get; set; }
-
     }
-
     #endregion
 
 
