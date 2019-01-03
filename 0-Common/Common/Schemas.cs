@@ -64,6 +64,14 @@ namespace Common
     }
     #endregion
 
-
+    #region RSA加密
+    public class RSAItem
+    {
+        public string Guid { get; set; }
+        public string PrivateKey { get; set; }
+        public string PublickKey { get; set; }
+        public DateTime CreateTime { get; set; }
+    }
+    #endregion
 
 }

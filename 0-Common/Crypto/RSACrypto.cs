@@ -18,18 +18,16 @@ namespace Crypto
         /// </summary>
         /// <param name="PrivateKey">私钥</param>
         /// <param name="PublicKey">公钥</param>
-        public void CreateKeys(out string PrivateKey, out string PublicKey)
+        public void CreateKeys(out string privateKey, out string publicKey)
         {
             try
             {
                 RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-                PrivateKey = rsa.ToXmlString(true);
-                PublicKey = rsa.ToXmlString(false);
-
+                privateKey = rsa.ToXmlString(true);
+                publicKey = rsa.ToXmlString(false);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -54,6 +52,12 @@ namespace Crypto
             return Convert.ToBase64String(encryptBytes);
         }
 
+        /// <summary>
+        /// 解密
+        /// </summary>
+        /// <param name="privateKey"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public string Decrypt(string privateKey, string data)
         {
             try

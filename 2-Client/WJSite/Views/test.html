@@ -4,23 +4,50 @@
     <meta charset="utf-8" />
     <title></title>
     <script src="../Resources/js/plugins/jquery.min.js"></script>
+    <script src="../Resources/js/plugins/encrypt.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            var mStr, guid;
             $.ajax({
                 url: '/api/common/pubKey',
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+                    guid = data[0];
+                    var publicKey = data[1];
+                    console.log(guid);
+                    console.log(publicKey);
+                    var encrypt = new JSEncrypt();
+                    encrypt.setPublicKey(publicKey);
+                    mStr = encrypt.encrypt("123456789");
+
                 },
                 error: function () {
                     console.log('error');
                 }
             });
+            $('#btnJiaMi').click(function () {
+                $.ajax({
+                    url: '/api/common/jiemi',
+                    data: { guid: guid, mStr: mStr },
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function () {
+                        console.log('error');
+                    }
+                });
+            });
         });
     </script>
 </head>
 <body>
+    <input id="txtData" type="text" />
+    <input id="btnJiaMi" type="button" value="加密" />
+    <div id="txtResult" style="width:200px;height:200px;border:1px solid #000;margin-top:20px">
 
+    </div>
 </body>
 </html>

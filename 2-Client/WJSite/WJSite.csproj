@@ -156,6 +156,10 @@
       <Project>{a41a7e97-9413-469a-9b12-a139223df6f5}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\0-Common\Crypto\Crypto.csproj">
+      <Project>{c0ca87ca-2154-48fe-9e25-bee0705316f3}</Project>
+      <Name>Crypto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\0-Common\Utils\Utils.csproj">
       <Project>{f9b5bef5-ff97-4863-b1cf-7a8091a314a5}</Project>
       <Name>Utils</Name>
